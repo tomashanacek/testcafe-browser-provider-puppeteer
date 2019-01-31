@@ -2,17 +2,14 @@ import puppeteer from 'puppeteer';
 
 export default {
     // Multiple browsers support
-    isMultiBrowser: false,
-
-    browser: null,
+    isMultiBrowser: true,
 
     openedPages: {},
-
+    browsers: {},
 
     // Required - must be implemented
     // Browser control
     async openBrowser (id, pageUrl, browserName) {
-
         let puppeteerArgs = ['--disable-dev-shm-usage'];
 
         if (browserName === 'no_sandbox') {
@@ -21,11 +18,12 @@ export default {
                 '--disable-setuid-sandbox'
             ];
         }
-        this.browser = await puppeteer.launch({
+        const browser = await puppeteer.launch({
             args: puppeteerArgs
         });
+        this.browsers[id] = browser
 
-        const page = await this.browser.newPage();
+        const page = await browser.newPage();
 
         await page.goto(pageUrl);
         this.openedPages[id] = page;
@@ -33,7 +31,7 @@ export default {
 
     async closeBrowser (id) {
         delete this.openedPages[id];
-        await this.browser.close();
+        await this.browsers[id].close();
     },
 
 
