@@ -23,7 +23,6 @@ export default {
                 ];
             }
             this.browser = await puppeteer.launch({
-                timeout: 10000,
                 args: puppeteerArgs
             });
 
