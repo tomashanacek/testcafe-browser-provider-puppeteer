@@ -10,7 +10,7 @@ export default {
     // Required - must be implemented
     // Browser control
     async openBrowser (id, pageUrl, browserName) {
-        let puppeteerArgs = ['--disable-dev-shm-usage'];
+        let puppeteerArgs = [];
 
         if (browserName === 'no_sandbox') {
             puppeteerArgs = [
@@ -18,6 +18,11 @@ export default {
                 '--disable-setuid-sandbox'
             ];
         }
+
+        puppeteerArgs.push('--disable-dev-shm-usage')
+
+        console.log('Puppeteer args:', puppeteerArgs)
+
         const browser = await puppeteer.launch({
             args: puppeteerArgs
         });
