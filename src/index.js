@@ -14,7 +14,7 @@ export default {
     async openBrowser (id, pageUrl, browserName) {
 
         if (!this.browser) {
-            let puppeteerArgs = [];
+            let puppeteerArgs = ['--disable-dev-shm-usage'];
 
             if (browserName === 'no_sandbox') {
                 puppeteerArgs = [
