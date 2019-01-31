@@ -8,34 +8,26 @@ export default {
 
     openedPages: {},
     browsers: {},
-    browser: null,
 
-    async init() {
+    // Required - must be implemented
+    // Browser control
+    async openBrowser (id, pageUrl) {
+        console.log('[OPEN BROWSER] Puppeteer')
+
         let puppeteerArgs = [
             '--no-sandbox',
             '--disable-setuid-sandbox',
             '--disable-dev-shm-usage'
         ];
 
-        console.log('[INIT] Puppeteer args:', puppeteerArgs)
+        console.log('[OPEN BROWSER] Puppeteer args:', puppeteerArgs)
 
-        this.browser = await puppeteer.launch({
+        const browser = await puppeteer.launch({
             args: puppeteerArgs,
             executablePath: '/usr/bin/chromium',
             timeout: TIMEOUT
         });
-    },
 
-    async dispose() {
-        console.log('[DISPOSE] Puppeteer')
-        await this.browser.close();
-    },
-
-    // Required - must be implemented
-    // Browser control
-    async openBrowser (id, pageUrl) {
-        console.log('[CONNECT] Puppeteer')
-        const browser = await puppeteer.connect({ browserWSEndpoint: this.browser.wsEndpoint(), timeout: TIMEOUT })
         this.browsers[id] = browser
 
         const page = await browser.newPage();
@@ -45,9 +37,9 @@ export default {
     },
 
     async closeBrowser (id) {
-        console.log('[DISCONNECT] Puppeteer')
+        console.log('[CLOSE BROWSER] Puppeteer')
         delete this.openedPages[id];
-        await this.browsers[id].disconnect();
+        await this.browsers[id].close();
     },
 
 
