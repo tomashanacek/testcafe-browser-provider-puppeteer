@@ -19,8 +19,6 @@ export default {
             ];
         }
 
-        puppeteerArgs.push('--disable-dev-shm-usage')
-
         console.log('Puppeteer args:', puppeteerArgs)
 
         const browser = await puppeteer.launch({
