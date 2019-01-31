@@ -2,7 +2,7 @@ import puppeteer from 'puppeteer';
 
 export default {
     // Multiple browsers support
-    isMultiBrowser: true,
+    isMultiBrowser: false,
 
     browser: null,
 
@@ -13,20 +13,17 @@ export default {
     // Browser control
     async openBrowser (id, pageUrl, browserName) {
 
-        if (!this.browser) {
-            let puppeteerArgs = ['--disable-dev-shm-usage'];
+        let puppeteerArgs = ['--disable-dev-shm-usage'];
 
-            if (browserName === 'no_sandbox') {
-                puppeteerArgs = [
-                    '--no-sandbox',
-                    '--disable-setuid-sandbox'
-                ];
-            }
-            this.browser = await puppeteer.launch({
-                args: puppeteerArgs
-            });
-
+        if (browserName === 'no_sandbox') {
+            puppeteerArgs = [
+                '--no-sandbox',
+                '--disable-setuid-sandbox'
+            ];
         }
+        this.browser = await puppeteer.launch({
+            args: puppeteerArgs
+        });
 
         const page = await this.browser.newPage();
 
